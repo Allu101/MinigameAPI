@@ -1,0 +1,4 @@
+name: MinigameAPI
+main: com.allu.minigameapi.MinigameAPI
+version: 0.1
+api-version: 1.14
