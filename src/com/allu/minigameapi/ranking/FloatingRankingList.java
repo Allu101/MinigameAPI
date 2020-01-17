@@ -30,10 +30,8 @@ public class FloatingRankingList {
 	public void recreateHolograms(ArrayList<RankedPlayer> players) {
 		ArrayList<String> rankingList = getTopRankings(players, 10);
 		World world = location.getWorld();
-		System.out.println("loc: " + location);
 		for(Entity e : world.getEntities()) {
 			if(belongsToThisList(e)) {
-				System.out.println("REMOVED: "+location);
 				e.remove();
 			}
 		}
@@ -50,16 +48,10 @@ public class FloatingRankingList {
 		as.setCustomName(text); //Set this to the text you want
 		as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
 		as.setVisible(false); //Makes the ArmorStand invisible
-		System.out.println("CREATED: "+loc);
-		
 	}
 	
 	private boolean belongsToThisList(Entity e) {
 		Location loc = e.getLocation();
-		if(e.getType().equals(EntityType.ARMOR_STAND)) {
-			System.out.println(Math.abs(loc.getX() - location.getX()));
-			System.out.println(Math.abs(loc.getZ() - location.getZ()));
-		}
 		return e.getType().equals(EntityType.ARMOR_STAND) && 
 				Math.abs(loc.getX() - location.getX()) < 1 && 
 				Math.abs(loc.getZ() - location.getZ()) < 1;
