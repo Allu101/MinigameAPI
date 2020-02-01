@@ -38,7 +38,7 @@ public class CountDownTimer {
 		time = newTime;
 		message = msg;
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinigameAPI.plugin, new Runnable() {
-            @SuppressWarnings("deprecation")
+			@SuppressWarnings("deprecation")
 			@Override
             public void run() {
                   if(time <= 0) {
@@ -47,10 +47,10 @@ public class CountDownTimer {
                 	  return;
                   }
                   listener.onCountDownChange(time);
-                  if(!message.isEmpty()) {
-                	  if((time % 5 == 0 && time <= 10) || time <= 3) {
-                		  Bukkit.broadcastMessage(ChatColor.YELLOW + message + " " + time + " sekuntia");
-                		  for(Player p : players) {
+                  if (!message.isEmpty()) {
+                	  if ((time % 5 == 0 && time <= 10) || time <= 3) {
+                		  for (Player p : players) {
+                			  p.sendMessage(ChatColor.YELLOW + message + " " + time + " sekuntia");
                 			  p.playSound(p.getLocation(), Sound.NOTE_PLING, 1f, 0f);
                 			  p.sendTitle("" + ChatColor.YELLOW + time, "");
                 		  }

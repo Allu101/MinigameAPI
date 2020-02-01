@@ -7,7 +7,7 @@ public class MessageHandler {
 	private final static int CENTER_PX = 154;
 	
 	public String getCenteredMessage(String message) {
-        if(message == null || message.equals("")) {
+        if (message == null || message.equals("")) {
         	return "";
         }
         message = ChatColor.translateAlternateColorCodes('&', message);
@@ -16,11 +16,11 @@ public class MessageHandler {
         boolean previousCode = false;
         boolean isBold = false;
        
-        for(char c : message.toCharArray()) {
-            if(c == '§'){
+        for (char c : message.toCharArray()) {
+            if (c == '§'){
                 previousCode = true;
                 continue;
-            } else if(previousCode == true) {
+            } else if (previousCode == true) {
                 previousCode = false;
                 if(c == 'l' || c == 'L'){
                     isBold = true;
@@ -38,7 +38,7 @@ public class MessageHandler {
         int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
         int compensated = 0;
         StringBuilder sb = new StringBuilder();
-        while(compensated < toCompensate) {
+        while (compensated < toCompensate) {
             sb.append(" ");
             compensated += spaceLength;
         }
@@ -161,17 +161,19 @@ public class MessageHandler {
         }
        
         public int getBoldLength() {
-            if(this == DefaultFontInfo.SPACE) return this.getLength();
-            return this.length + 1;
+            if (this == DefaultFontInfo.SPACE) {
+            	return this.getLength();	
+        	}
+        return this.length + 1;
         }
        
         public static DefaultFontInfo getDefaultFontInfo(char c) {
-            for(DefaultFontInfo dFI : DefaultFontInfo.values()) {
+            for (DefaultFontInfo dFI : DefaultFontInfo.values()) {
             	if(dFI.getCharacter() == c) {
             		return dFI;
             	}
             }
-            return DefaultFontInfo.DEFAULT;
+        return DefaultFontInfo.DEFAULT;
         }
 	}
 	

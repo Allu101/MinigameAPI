@@ -30,13 +30,13 @@ public class FloatingRankingList {
 	public void recreateHolograms(ArrayList<RankedPlayer> players) {
 		ArrayList<String> rankingList = getTopRankings(players, 10);
 		World world = location.getWorld();
-		for(Entity e : world.getEntities()) {
-			if(belongsToThisList(e)) {
+		for (Entity e : world.getEntities()) {
+			if (belongsToThisList(e)) {
 				e.remove();
 			}
 		}
 		createHologramText(location, header);
-		for(int i = 0; i < rankingList.size(); i++) {
+		for (int i = 0; i < rankingList.size(); i++) {
 			createHologramText(location.clone().add(0, -headerOffY - (i * offY), 0), rankingList.get(i));
 		}
 	}
