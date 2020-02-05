@@ -27,7 +27,7 @@ public class FloatingRankingList {
 		this.secondaryColor = secondaryColor;
 	}
 	
-	public void recreateHolograms(ArrayList<RankedPlayer> players) {
+	public void recreateHolograms(List<RankedPlayer> players) {
 		ArrayList<String> rankingList = getTopRankings(players, 10);
 		World world = location.getWorld();
 		for (Entity e : world.getEntities()) {

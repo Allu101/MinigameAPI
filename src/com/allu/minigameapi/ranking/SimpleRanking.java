@@ -1,6 +1,7 @@
 package com.allu.minigameapi.ranking;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -34,9 +35,9 @@ public class SimpleRanking {
 		floatingRankingLists.add(floatingRankingList);
 	}
 	
-	public void updateRankingWithPlayers() {
+	public void updateRankingWithPlayers(List<RankedPlayer> topPlayers) {
 		for(FloatingRankingList frl : floatingRankingLists) {
-			frl.recreateHolograms(players);
+			frl.recreateHolograms(topPlayers);
 		}
 	}
 	
