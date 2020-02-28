@@ -30,7 +30,7 @@ public class ItemHelpper {
 		return is;
 	}
 	
-	public ItemStack createItemWithTitle(Material itemType, String title, Color color) {
+	public ItemStack createLeatherItemWithTitle(Material itemType, String title, Color color) {
 		ItemStack is = new ItemStack(itemType, 1);
 		LeatherArmorMeta meta = (LeatherArmorMeta) is.getItemMeta();
 		meta.setDisplayName(title);
@@ -39,7 +39,7 @@ public class ItemHelpper {
 		return is;
 	}
 	
-	public static ItemStack getSkull(String skinURL, String name, String... lore) {
+	public ItemStack getSkull(String skinURL, String name, String... lore) {
         ItemStack head = new ItemStack(Material.SKULL, 1);
         if(skinURL.isEmpty()) {
         	return head;
