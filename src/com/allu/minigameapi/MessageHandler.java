@@ -1,10 +1,44 @@
 package com.allu.minigameapi;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 
 public class MessageHandler {
 	
 	private final static int CENTER_PX = 154;
+	
+	public static Color translateChatColorToColor(ChatColor chatColor) {
+        switch (chatColor) {
+            case AQUA:
+                return Color.AQUA;
+            case BLACK:
+                return Color.BLACK;
+            case BLUE:
+            case DARK_BLUE:
+            case DARK_AQUA:
+                return Color.BLUE;
+            case DARK_GRAY:
+            case GRAY:
+                return Color.GRAY;
+            case DARK_GREEN:
+            case GREEN:
+                return Color.GREEN;
+            case DARK_PURPLE:
+            case LIGHT_PURPLE:
+                return Color.PURPLE;
+            case DARK_RED:
+            case RED:
+                return Color.RED;
+            case GOLD:
+            case YELLOW:
+                return Color.YELLOW;
+            case WHITE:
+                return Color.WHITE;
+            default:
+            break;
+        }
+        return null;
+    }
 	
 	public String getCenteredMessage(String message) {
         if (message == null || message.equals("")) {
@@ -17,15 +51,11 @@ public class MessageHandler {
         boolean isBold = false;
        
         for (char c : message.toCharArray()) {
-            if (c == '§'){
+            if (c == '&'){
                 previousCode = true;
-                continue;
-            } else if (previousCode == true) {
+            } else if (previousCode) {
                 previousCode = false;
-                if(c == 'l' || c == 'L'){
-                    isBold = true;
-                    continue;
-                } else isBold = false;
+                isBold = c == 'l' || c == 'L';
             } else {
                 DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
                 messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
