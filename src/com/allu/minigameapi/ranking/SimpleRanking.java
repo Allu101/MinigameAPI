@@ -1,44 +1,41 @@
 package com.allu.minigameapi.ranking;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleRanking {
 
-	private ArrayList<RankedPlayer> players;
 	private ArrayList<FloatingRankingList> floatingRankingLists;
+	private ArrayList<RankedPlayer> players;
 	
 	public SimpleRanking(ArrayList<RankedPlayer> players) {
 		this.players = players;
-		floatingRankingLists = new ArrayList<FloatingRankingList>();
+		floatingRankingLists = new ArrayList<>();
 	}
 	
 	public void setRanking(Player p, int value) {
 		RankedPlayer rp = getRankedPlayer(p.getUniqueId().toString());
 		if(rp == null) {
 			rp = new RankedPlayer(p.getUniqueId().toString(), p.getName(), value);
-			this.players.add(rp);
-		}
-		else {
+			players.add(rp);
+		} else {
 			rp.setName(p.getPlayer().getName());
 			rp.setValue(value);
 		}
 	}
 	
-	public void addFloatingRankingList(Location location, String header, ChatColor primarycolor, ChatColor secondaryColor) {
-		FloatingRankingList floatingRankingList = new FloatingRankingList(location, header, primarycolor, secondaryColor);
+	public void addFloatingRankingList(Location location, String header, ChatColor primaryColor, ChatColor secondaryColor) {
+		FloatingRankingList floatingRankingList = new FloatingRankingList(location, header, primaryColor, secondaryColor);
 		floatingRankingList.recreateHolograms(players);
 		floatingRankingLists.add(floatingRankingList);
 	}
 	
 	public void updateRankingWithPlayers(List<RankedPlayer> topPlayers) {
-		for(FloatingRankingList frl : floatingRankingLists) {
-			frl.recreateHolograms(topPlayers);
-		}
+		floatingRankingLists.forEach(frl -> frl.recreateHolograms(topPlayers));
 	}
 	
 	private RankedPlayer getRankedPlayer(String uuid) {

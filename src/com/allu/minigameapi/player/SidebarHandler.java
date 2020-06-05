@@ -1,11 +1,11 @@
 package com.allu.minigameapi.player;
 
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+
+import java.util.ArrayList;
 
 public class SidebarHandler {
 	

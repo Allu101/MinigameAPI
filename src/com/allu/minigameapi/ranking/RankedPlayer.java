@@ -2,7 +2,7 @@ package com.allu.minigameapi.ranking;
 
 public class RankedPlayer {
 
-	private String uuid;
+	private final String uuid;
 	private String name;
 	private int value;
 	
@@ -14,10 +14,6 @@ public class RankedPlayer {
 
 	public String getUuid() {
 		return uuid;
-	}
-
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
 	}
 
 	public String getName() {

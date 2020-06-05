@@ -1,8 +1,5 @@
 package com.allu.minigameapi.ranking;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -10,18 +7,21 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FloatingRankingList {
 
-	private Location location;
-	private String header;
+	private final ChatColor primaryColor;
+	private final ChatColor secondaryColor;
+	private final Location location;
+	private final String header;
 	
 	private double headerOffY = 0.5;
 	private double offY = 0.28;
-	private ChatColor primaryColor;
-	private ChatColor secondaryColor;
 	
-	public FloatingRankingList(Location location, String header, ChatColor primaryColor, ChatColor secondaryColor) {
-		this.location = location;
+	public FloatingRankingList(Location loc, String header, ChatColor primaryColor, ChatColor secondaryColor) {
+		this.location = loc;
 		this.header = header;
 		this.primaryColor = primaryColor;
 		this.secondaryColor = secondaryColor;
@@ -58,7 +58,7 @@ public class FloatingRankingList {
 	}
 	
 	private ArrayList<String> getTopRankings(List<RankedPlayer> rankedPlayers, int count) {
-		ArrayList<String> lines = new ArrayList<String>();
+		ArrayList<String> lines = new ArrayList<>();
 		int i = 0;
 		if (count > rankedPlayers.size()) {
 			count = rankedPlayers.size();
@@ -67,13 +67,16 @@ public class FloatingRankingList {
 		while (i < count) {
 			RankedPlayer rp = rankedPlayers.get(i);
 			if(rp.getValue() > 0) {
-				String numberPrefix = "" + primaryColor + (i+1) + ".";
-				if(i == 0) {
-					numberPrefix = "" + ChatColor.YELLOW + "❶";
-				} else if(i == 1) {
-					numberPrefix = "" + ChatColor.GRAY + "❷";
-				} else if(i == 2) {
-					numberPrefix = "" + ChatColor.GOLD + "❸";
+				String numberPrefix = "";
+				switch (i) {
+					case 0: numberPrefix = ChatColor.YELLOW + "❶";
+						break;
+					case 1: numberPrefix = ChatColor.GRAY + "❷";
+						break;
+					case 2: numberPrefix = ChatColor.GOLD + "❸";
+						break;
+					default: numberPrefix = "" + primaryColor + (i+1) + ".";
+						break;
 				}
 				lines.add(numberPrefix + " " + secondaryColor + rp.getName() + ChatColor.GRAY + " - " + primaryColor + rp.getValue());
 			}
