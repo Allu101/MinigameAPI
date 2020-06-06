@@ -14,12 +14,16 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
-public class ItemHelpper {
+public class ItemHelper {
 
 	private final static String SKULL_URL_PREFIX = "http://textures.minecraft.net/texture/";
 
 	public ItemStack createItemWithTitle(Material itemType, String title, String... lore) {
-		ItemStack is = new ItemStack(itemType, 1);
+		return createItemWithTitle(itemType, title, 1, lore);
+	}
+
+	public ItemStack createItemWithTitle(Material itemType, String title, int amount, String... lore) {
+		ItemStack is = new ItemStack(itemType, amount);
 		ItemMeta meta = is.getItemMeta();
 		meta.setDisplayName(title);
 		if (lore.length > 0) {
