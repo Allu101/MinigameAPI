@@ -51,13 +51,13 @@ public class MessageHandler {
         boolean isBold = false;
        
         for (char c : message.toCharArray()) {
-            if (c == '&'){
+            DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
+            if (dFI == DefaultFontInfo.DEFAULT){
                 previousCode = true;
             } else if (previousCode) {
                 previousCode = false;
-                isBold = c == 'l' || c == 'L';
+                isBold = dFI == DefaultFontInfo.l || dFI == DefaultFontInfo.L;
             } else {
-                DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
                 messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
                 messagePxSize++;
             }
@@ -148,7 +148,7 @@ public class MessageHandler {
         AMPERSAND('&', 5),
         ASTERISK('*', 5),
         LEFT_PARENTHESIS('(', 4),
-        RIGHT_PERENTHESIS(')', 4),
+        RIGHT_PARENTHESIS(')', 4),
         MINUS('-', 5),
         UNDERSCORE('_', 5),
         PLUS_SIGN('+', 5),
@@ -183,18 +183,18 @@ public class MessageHandler {
         }
        
         public char getCharacter() {
-            return this.character;
+            return character;
         }
        
         public int getLength() {
-            return this.length;
+            return length;
         }
        
-        public int getBoldLength() {
+        public double getBoldLength() {
             if (this == DefaultFontInfo.SPACE) {
-            	return this.getLength();	
-        	}
-        return this.length + 1;
+                return length;
+            }
+            return length + 1.5;
         }
        
         public static DefaultFontInfo getDefaultFontInfo(char c) {
@@ -203,7 +203,7 @@ public class MessageHandler {
             		return dFI;
             	}
             }
-        return DefaultFontInfo.DEFAULT;
+            return DefaultFontInfo.DEFAULT;
         }
 	}
 	
