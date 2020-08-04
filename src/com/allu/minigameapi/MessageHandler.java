@@ -192,7 +192,7 @@ public class MessageHandler {
        
         public double getBoldLength() {
             if (this == DefaultFontInfo.SPACE) {
-                return length;
+                return length + 1;
             }
             return length + 1.5;
         }
