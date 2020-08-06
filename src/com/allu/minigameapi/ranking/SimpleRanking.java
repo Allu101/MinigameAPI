@@ -5,10 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SimpleRanking {
 
@@ -51,15 +49,14 @@ public class SimpleRanking {
 	public void showPlayerOwnHologram(Player p) {
 		RankedPlayer rp = players.get(p.getUniqueId().toString());
 		if (rp != null) {
-			int placeNumber = new ArrayList<>(players.values()).indexOf(rp) + 1;
+			int placeNumber = new ArrayList<>(players.values()).stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList()).indexOf(rp) + 1;
 			if (placeNumber > 10) {
-				createPlayerHologram(p, rp);
+				createPlayerHologram(p, rp, placeNumber);
 			}
 		}
 	}
 
-	private void createPlayerHologram(Player p, RankedPlayer rp) {
-		int placeNumber = new ArrayList<>(players.values()).indexOf(rp) + 1;
+	private void createPlayerHologram(Player p, RankedPlayer rp, int placeNumber) {
 		String text = "" + primaryColor + "&l" + placeNumber
 				+ ". " + secondaryColor + "&l" + rp.getName() + ChatColor.GRAY + "&l" + " - " + primaryColor + "&l" + rp.getValue();
 		floatingRankingLists.get(p.getLocation().getWorld()).createHologramToPlayer(p, ChatColor.translateAlternateColorCodes('&', text));

@@ -61,7 +61,7 @@ public class FloatingRankingList {
 
 	public void createHologramToPlayer(Player p, String text) {
 		EntityArmorStand as = new EntityArmorStand(((CraftWorld) location.getWorld()).getHandle(),
-				location.getX(), location.getY() - headerOffY*2 - (10 * offY),location.getZ());
+				location.getX(), location.getY() - offY * 2 - (10 * offY),location.getZ());
 		as.setCustomName(text);
 		as.setCustomNameVisible(true);
 		as.setGravity(false);
