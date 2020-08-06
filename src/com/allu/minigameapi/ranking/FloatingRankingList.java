@@ -2,14 +2,11 @@ package com.allu.minigameapi.ranking;
 
 import net.minecraft.server.v1_8_R3.EntityArmorStand;
 import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -35,48 +32,31 @@ public class FloatingRankingList {
 	}
 
 	public void recreateHolograms(List<RankedPlayer> players) {
-		players = players.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
-		ArrayList<String> rankingList = getTopRankings(players, 10);
-		World world = location.getWorld();
-		for (Entity e : world.getEntities()) {
-			if (belongsToThisList(e)) {
-				e.remove();
+		ArrayList<String> rankingList = getTopRankings(players.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList()), 10);
+		Bukkit.getOnlinePlayers().forEach(player -> {
+			createAndSendHologramPacket(player, location, header);
+			for (int i = 0; i < rankingList.size(); i++) {
+				createAndSendHologramPacket(player, location.clone().add(0, -headerOffY - (i * offY), 0), rankingList.get(i));
 			}
-		}
-		createHologram(location, header);
-		for (int i = 0; i < rankingList.size(); i++) {
-			createHologram(location.clone().add(0, -headerOffY - (i * offY), 0), rankingList.get(i));
-		}
-	}
-	
-	private void createHologram(Location loc, String text) {
-		ArmorStand as = (ArmorStand) loc.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
-		as.setCustomName(text); //Set this to the text you want
-		as.setGravity(false); //Make sure it doesn't fall
-		as.setCanPickupItems(true); //I'm not sure what happens if you leave this as it is, but you might as well disable it
-		as.setCustomNameVisible(true); //This makes the text appear no matter if your looking at the entity or not
-		as.setVisible(false); //Makes the ArmorStand invisible
-		as.setSmall(true);
+		});
 	}
 
-	public void createHologramToPlayer(Player p, String text) {
-		EntityArmorStand as = new EntityArmorStand(((CraftWorld) location.getWorld()).getHandle(),
-				location.getX(), location.getY() - offY * 2 - (10 * offY),location.getZ());
-		as.setCustomName(text);
+	public void createPlayerOwnStatsHologram(Player p, RankedPlayer rp, int placeNumber) {
+		createAndSendHologramPacket(p, new Location(location.getWorld(), location.getX(), location.getY() - offY * 2 - (10 * offY), location.getZ()),
+				primaryColor + "&l" + placeNumber + ". " + secondaryColor + "&l" + rp.getName() + "&7&l - " + primaryColor + "&l" + rp.getValue());
+	}
+
+	private void createAndSendHologramPacket(Player p, Location loc, String text) {
+		EntityArmorStand as = new EntityArmorStand(((CraftWorld) loc.getWorld()).getHandle(),
+				loc.getX(), loc.getY(), loc.getZ());
+
+		as.setCustomName(ChatColor.translateAlternateColorCodes('&', text));
 		as.setCustomNameVisible(true);
 		as.setGravity(false);
 		as.setSmall(true);
 		as.setInvisible(true);
-
 		PacketPlayOutSpawnEntityLiving entity = new PacketPlayOutSpawnEntityLiving(as);
 		((CraftPlayer) p).getHandle().playerConnection.sendPacket(entity);
-	}
-
-	private boolean belongsToThisList(Entity e) {
-		Location loc = e.getLocation();
-		return e.getType().equals(EntityType.ARMOR_STAND) &&
-				Math.abs(loc.getX() - location.getX()) < 1 && 
-				Math.abs(loc.getZ() - location.getZ()) < 1;
 	}
 	
 	private ArrayList<String> getTopRankings(List<RankedPlayer> rankedPlayers, int count) {
@@ -104,5 +84,4 @@ public class FloatingRankingList {
 		}
 		return lines;
 	}
-	
 }
