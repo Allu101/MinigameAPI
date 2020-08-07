@@ -10,9 +10,7 @@ import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FloatingRankingList {
 
@@ -31,8 +29,8 @@ public class FloatingRankingList {
 		this.secondaryColor = secondaryColor;
 	}
 
-	public void recreateHolograms(List<RankedPlayer> players) {
-		ArrayList<String> rankingList = getTopRankings(players.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList()), 10);
+	public void recreateHolograms(List<RankedPlayer> sortedPlayers) {
+		ArrayList<String> rankingList = getTopRankings(sortedPlayers, 10);
 		Bukkit.getOnlinePlayers().forEach(player -> {
 			createAndSendHologramPacket(player, location, header);
 			for (int i = 0; i < rankingList.size(); i++) {
