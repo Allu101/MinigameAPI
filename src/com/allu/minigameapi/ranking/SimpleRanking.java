@@ -30,23 +30,25 @@ public class SimpleRanking {
 	}
 	
 	public void addFloatingRankingList(Location location, String header, ChatColor primaryColor, ChatColor secondaryColor) {
-		floatingRankingLists.put(location.getWorld(), new FloatingRankingList(location, header, primaryColor, secondaryColor));
+		FloatingRankingList frl = new FloatingRankingList(location, header, primaryColor, secondaryColor);
+		floatingRankingLists.put(location.getWorld(), frl);
+		frl.createArmorStandPackets(players.values().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList()));
 	}
 	
-	public void updateRankingWithPlayers(List<RankedPlayer> sortedPlayers) {
-		floatingRankingLists.values().forEach(frl -> frl.recreateHolograms(sortedPlayers));
+	public void updateRanking(List<RankedPlayer> sortedPlayers) {
+		floatingRankingLists.values().forEach(frl -> frl.createArmorStandPackets(sortedPlayers));
 	}
 
 	public void showTopListAndOwnStatsToPlayer(Player p) {
 		RankedPlayer rp = players.get(p.getUniqueId().toString());
 		List<RankedPlayer> sortedPlayers = players.values().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
-		floatingRankingLists.get(p.getLocation().getWorld()).recreateHolograms(sortedPlayers);
 		if (rp != null) {
 			int placeNumber = sortedPlayers.indexOf(rp) + 1;
 			if (placeNumber > 10) {
-				floatingRankingLists.get(p.getLocation().getWorld()).createPlayerOwnStatsHologram(p , rp, placeNumber);
+				floatingRankingLists.get(p.getLocation().getWorld()).createAndShowPlayerOwnStatsHologram(p, rp, placeNumber);
 			}
 		}
+		floatingRankingLists.get(p.getLocation().getWorld()).showTopList(p);
 	}
 
 }
