@@ -9,7 +9,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 
 public class CountDownTimer {
-	
+
+	private boolean isRunning = false;
 	private int time;
 	private int taskID;
 	
@@ -30,7 +31,11 @@ public class CountDownTimer {
 	public void clearPlayers() {
 		players.clear();
 	}
-	
+
+	public boolean isRunning() {
+		return isRunning;
+	}
+
 	public void removePlayer(Player p) {
 		players.remove(p);
 	}
@@ -39,8 +44,13 @@ public class CountDownTimer {
 		start(newTime, "");
 	}
 
+	/**
+	 * %time% - time
+	 * @return
+	 */
 	public void start(int newTime, String msg) {
 		this.stop();
+		isRunning = true;
 		time = newTime;
 		message = msg;
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinigameAPI.plugin, () -> {
@@ -53,7 +63,7 @@ public class CountDownTimer {
 			if (!message.isEmpty()) {
 				if ((time % 5 == 0 && time <= 10) || time <= 3) {
 					for (Player p : players) {
-						p.sendMessage(ChatColor.YELLOW + message + " " + time + " sekuntia");
+						p.sendMessage(ChatColor.YELLOW + message.replaceAll("%time%", String.valueOf(time)));
 						p.playSound(p.getLocation(), Sound.NOTE_PLING, 1f, 0f);
 						p.sendTitle("" + ChatColor.YELLOW + time, "");
 						titleHandler.sendTitle(p, time + "", ChatColor.YELLOW, false);
@@ -65,6 +75,7 @@ public class CountDownTimer {
 	}
 	
 	public void stop() {
+		isRunning = false;
 		Bukkit.getScheduler().cancelTask(taskID);
 	}
 
