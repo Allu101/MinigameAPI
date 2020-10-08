@@ -65,7 +65,6 @@ public class CountDownTimer {
 					for (Player p : players) {
 						p.sendMessage(ChatColor.YELLOW + message.replaceAll("%time%", String.valueOf(time)));
 						p.playSound(p.getLocation(), Sound.NOTE_PLING, 1f, 0f);
-						p.sendTitle("" + ChatColor.YELLOW + time, "");
 						titleHandler.sendTitle(p, time + "", ChatColor.YELLOW, false);
 					}
 				}
