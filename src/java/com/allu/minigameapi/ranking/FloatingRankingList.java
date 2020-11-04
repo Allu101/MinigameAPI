@@ -1,11 +1,9 @@
 package com.allu.minigameapi.ranking;
 
-import net.minecraft.server.v1_8_R3.EntityArmorStand;
-import net.minecraft.server.v1_8_R3.PacketPlayOutSpawnEntityLiving;
+import com.allu.minigameapi.holograms.Holograms;
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -13,11 +11,11 @@ import java.util.List;
 
 public class FloatingRankingList {
 
+	private final Hologram topListHologram;
 	private ChatColor primaryColor;
 	private ChatColor secondaryColor;
 	private final Location location;
 	private String header;
-	private List<PacketPlayOutSpawnEntityLiving> armorStands = new ArrayList<>();
 	
 	private double headerOffY = 0.5;
 	private double offY = 0.28;
@@ -27,42 +25,30 @@ public class FloatingRankingList {
 		this.header = header;
 		this.primaryColor = primaryColor;
 		this.secondaryColor = secondaryColor;
+		topListHologram = Holograms.createHologram(location, header);
 	}
 
-	public void createArmorStandPackets(List<RankedPlayer> sortedPlayers) {
+	public void updateTopList(List<RankedPlayer> sortedPlayers) {
 		ArrayList<String> rankingList = getTopRankings(sortedPlayers, 10);
-		armorStands.clear();
-		armorStands.add(createHologramPacket(location, header));
 		for (int i = 0; i < rankingList.size(); i++) {
-			PacketPlayOutSpawnEntityLiving entity = createHologramPacket(location.clone().add(0, -headerOffY - (i * offY), 0), rankingList.get(i));
-			armorStands.add(entity);
+			topListHologram.insertTextLine((i + 1), rankingList.get(i));
 		}
 	}
 
-	public void showTopList(Player p) {
-		armorStands.forEach(armorStand -> ((CraftPlayer) p).getHandle().playerConnection.sendPacket(armorStand));
-
+	public void createPlayerOwnStatsHologram(Player p, RankedPlayer rp, int placeNumber) {
+		Location loc = new Location(location.getWorld(), location.getX(), location.getY() - offY * 2 - (11.5 * offY), location.getZ());
+		if (Holograms.getHologram(loc, p.getName()) != null) {
+			Holograms.removeHologram(loc, p.getName());
+		}
+		Holograms.createHologramToPlayer(p, new Location(location.getWorld(), location.getX(),
+				location.getY() - offY * 2 - (11.5 * offY), location.getZ()), primaryColor + "§l" +
+				placeNumber + ". " +secondaryColor + "§l" + rp.getName() + "§7§l - " + primaryColor + "§l" + rp.getValue());
 	}
 
-	public void createAndShowPlayerOwnStatsHologram(Player p, RankedPlayer rp, int placeNumber) {
-		PacketPlayOutSpawnEntityLiving entity = createHologramPacket(new Location(location.getWorld(), location.getX(),
-				location.getY() - offY * 2 - (10 * offY), location.getZ()),
-				primaryColor + "&l" + placeNumber + ". " + secondaryColor + "&l" + rp.getName() + "&7&l - " + primaryColor + "&l" + rp.getValue());
-		((CraftPlayer) p).getHandle().playerConnection.sendPacket(entity);
+	public void removePlayerOwnStatsHologram(Location loc, String playerName) {
+		Holograms.getHologram(loc, playerName).delete();
 	}
 
-	private PacketPlayOutSpawnEntityLiving createHologramPacket(Location loc, String text) {
-		EntityArmorStand as = new EntityArmorStand(((CraftWorld) loc.getWorld()).getHandle(),
-				loc.getX(), loc.getY(), loc.getZ());
-
-		as.setCustomName(ChatColor.translateAlternateColorCodes('&', text));
-		as.setCustomNameVisible(true);
-		as.setGravity(false);
-		as.setSmall(true);
-		as.setInvisible(true);
-		return new PacketPlayOutSpawnEntityLiving(as);
-	}
-	
 	private ArrayList<String> getTopRankings(List<RankedPlayer> rankedPlayers, int count) {
 		ArrayList<String> lines = new ArrayList<>();
 		int i = 0;
