@@ -39,6 +39,10 @@ public class SimpleRanking {
 		floatingRankingLists.values().forEach(frl -> frl.updateTopList(sortedPlayers));
 	}
 
+	public void removePlayerOwnStatsHologram(String playerName) {
+		floatingRankingLists.values().forEach(frl -> frl.removePlayerOwnStatsHologram(playerName));
+	}
+
 	public void updatePlayerOwnStatsHologram(Player p) {
 		RankedPlayer rp = players.get(p.getUniqueId().toString());
 		List<RankedPlayer> sortedPlayers = players.values().stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());

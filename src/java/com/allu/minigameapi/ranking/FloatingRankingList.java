@@ -16,6 +16,7 @@ public class FloatingRankingList {
 	private ChatColor secondaryColor;
 	private final Location location;
 	private String header;
+	private Location ownStatsLoc;
 	
 	private double headerOffY = 0.5;
 	private double offY = 0.28;
@@ -26,12 +27,16 @@ public class FloatingRankingList {
 		this.primaryColor = primaryColor;
 		this.secondaryColor = secondaryColor;
 		topListHologram = Holograms.createHologram(location, header);
+		ownStatsLoc = new Location(location.getWorld(), location.getX(),
+				location.getY() - offY * 2 - (11.4 * offY), location.getZ());
 	}
 
 	public void updateTopList(List<RankedPlayer> sortedPlayers) {
 		ArrayList<String> rankingList = getTopRankings(sortedPlayers, 10);
+		topListHologram.clearLines();
+		topListHologram.appendTextLine(header);
 		for (int i = 0; i < rankingList.size(); i++) {
-			topListHologram.insertTextLine((i + 1), rankingList.get(i));
+			topListHologram.appendTextLine(rankingList.get(i));
 		}
 	}
 
@@ -40,13 +45,12 @@ public class FloatingRankingList {
 		if (Holograms.getHologram(loc, p.getName()) != null) {
 			Holograms.removeHologram(loc, p.getName());
 		}
-		Holograms.createHologramToPlayer(p, new Location(location.getWorld(), location.getX(),
-				location.getY() - offY * 2 - (11.5 * offY), location.getZ()), primaryColor + "§l" +
+		Holograms.createHologramToPlayer(p, ownStatsLoc, primaryColor + "§l" +
 				placeNumber + ". " +secondaryColor + "§l" + rp.getName() + "§7§l - " + primaryColor + "§l" + rp.getValue());
 	}
 
-	public void removePlayerOwnStatsHologram(Location loc, String playerName) {
-		Holograms.getHologram(loc, playerName).delete();
+	public void removePlayerOwnStatsHologram(String playerName) {
+		Holograms.getHologram(ownStatsLoc, playerName).delete();
 	}
 
 	private ArrayList<String> getTopRankings(List<RankedPlayer> rankedPlayers, int count) {
