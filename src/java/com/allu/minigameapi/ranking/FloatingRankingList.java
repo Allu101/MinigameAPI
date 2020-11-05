@@ -49,10 +49,6 @@ public class FloatingRankingList {
 				placeNumber + ". " +secondaryColor + "§l" + rp.getName() + "§7§l - " + primaryColor + "§l" + rp.getValue());
 	}
 
-	public void removePlayerOwnStatsHologram(String playerName) {
-		Holograms.getHologram(ownStatsLoc, playerName).delete();
-	}
-
 	private ArrayList<String> getTopRankings(List<RankedPlayer> rankedPlayers, int count) {
 		ArrayList<String> lines = new ArrayList<>();
 		int i = 0;
