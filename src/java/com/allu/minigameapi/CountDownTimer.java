@@ -1,9 +1,9 @@
 package com.allu.minigameapi;
 
+import com.allu.minigameapi.player.Sounds;
 import com.allu.minigameapi.player.TitleHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -64,7 +64,7 @@ public class CountDownTimer {
 				if ((time % 5 == 0 && time <= 10) || time <= 3) {
 					for (Player p : players) {
 						p.sendMessage(ChatColor.YELLOW + message.replaceAll("%time%", String.valueOf(time)));
-						p.playSound(p.getLocation(), Sound.NOTE_PLING, 1f, 0f);
+						p.playSound(p.getLocation(), Sounds.NOTE_PLING.bukkitSound(), 1f, 0f);
 						titleHandler.sendTitle(p, time + "", ChatColor.YELLOW, false);
 					}
 				}
