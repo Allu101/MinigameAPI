@@ -1,5 +1,6 @@
 package com.allu.minigameapi;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MinigameAPI extends JavaPlugin {
@@ -13,6 +14,14 @@ public class MinigameAPI extends JavaPlugin {
 
 	@Override
     public void onDisable() {
+	}
+
+	public String getServerVersion() {
+		return Bukkit.getServer().getClass().getPackage().getName().substring(23);
+	}
+
+	public Class<?> getClass(String className) throws ClassNotFoundException {
+		return Class.forName(this.toString() + "." + className);
 	}
 
 }
