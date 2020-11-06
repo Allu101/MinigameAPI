@@ -21,7 +21,7 @@ public class MinigameAPI extends JavaPlugin {
 	}
 
 	public Class<?> getClass(String className) throws ClassNotFoundException {
-		return Class.forName(this.toString() + "." + className);
+		return Class.forName("net.minecraft.server." + getServerVersion() + "." + className);
 	}
 
 }
