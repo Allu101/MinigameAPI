@@ -23,13 +23,16 @@ public class ItemHelper {
 	}
 
 	public ItemStack createItemWithTitle(Material itemType, String title, int amount, String... lore) {
-		ItemStack is = new ItemStack(itemType, amount);
+		return createItemWithTitle(itemType, title, amount, 0, lore);
+	}
+
+	public ItemStack createItemWithTitle(Material itemType, String title, int amount, int dataValue, String... lore) {
+		ItemStack is = new ItemStack(itemType, amount, (short) dataValue);
 		ItemMeta meta = is.getItemMeta();
 		meta.setDisplayName(title);
 		if (lore.length > 0) {
 			meta.setLore(Arrays.asList(lore));
 		}
-		
 		is.setItemMeta(meta);
 		return is;
 	}
@@ -86,6 +89,5 @@ public class ItemHelper {
 		if (is1.getItemMeta().getLore() == null || is2.getItemMeta().getLore() == null)
 			return true;
 		return is1.getItemMeta().getLore().equals(is2.getItemMeta().getLore());
-		
 	}
 }
