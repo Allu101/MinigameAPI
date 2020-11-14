@@ -64,7 +64,11 @@ public class CountDownTimer {
 				if ((time % 5 == 0 && time <= 10) || time <= 3) {
 					for (Player p : players) {
 						p.sendMessage(ChatColor.YELLOW + message.replaceAll("%time%", String.valueOf(time)));
-						p.playSound(p.getLocation(), Sounds.NOTE_PLING.bukkitSound(), 1f, 0f);
+						try {
+							p.playSound(p.getLocation(), Sounds.NOTE_PLING.bukkitSound(), 1f, 0f);
+						} catch (Exception e) {
+
+						}
 						titleHandler.sendTitle(p, "§e" + time);
 					}
 				}
