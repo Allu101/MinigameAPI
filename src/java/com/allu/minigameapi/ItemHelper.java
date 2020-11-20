@@ -46,7 +46,7 @@ public class ItemHelper {
 		return is;
 	}
 	
-	public ItemStack getSkull(String skinURL, String name, String... lore) {
+	/*public ItemStack getSkull(String skinURL, String name, String... lore) {
         ItemStack head = new ItemStack(Material.SKULL, 1);
         if(skinURL.isEmpty()) {
         	return head;
@@ -77,7 +77,7 @@ public class ItemHelper {
         
         head.setItemMeta(headMeta);
         return head;
-    }
+    }*/
 	
 	public static boolean matches(ItemStack is1, ItemStack is2) {
 		return is1.getType().equals(is2.getType())
