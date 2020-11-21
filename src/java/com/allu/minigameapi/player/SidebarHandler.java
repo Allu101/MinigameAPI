@@ -12,16 +12,13 @@ public class SidebarHandler {
 	private String emptyRow = " ";
 	private String header = "";
 	
-	private Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
+	private Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
 	private Objective sidebar_obj;
 	private ArrayList<String> sidebar_rows;
 	
 	public SidebarHandler(String title, ArrayList<String> rows) {
 		header = title;
 		this.sidebar_rows = rows;
-		if (board.getObjective("obj") != null) {
-			board.getObjective("obj").unregister();
-		}
 		sidebar_obj = board.registerNewObjective("obj", "dummy");
 	}
 	
